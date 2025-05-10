@@ -1,4 +1,4 @@
-/* style.css */
+/* style.css - Versão responsiva completa */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@400;700&family=Exo+2:wght@400;700&family=Fira+Code&display=swap');
 
 body {
@@ -65,12 +65,10 @@ nav.module-nav ul.module-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  /* Esconde a lista por padrão */
   display: none;
 }
 
 nav.module-nav ul.module-list.active {
-  /* Exibe quando a classe .active estiver presente */
   display: block;
 }
 
@@ -179,9 +177,9 @@ footer.main-footer {
   border-top: 5px solid #82c91e;
 }
 
-/* ======== RESPONSIVIDADE ======== */
+/* ======== RESPONSIVIDADE AVANÇADA ======== */
 
-/* Tablets e telas médias */
+/* Off-canvas menu e ajustes mobile */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -190,66 +188,80 @@ footer.main-footer {
   }
 
   nav.module-nav {
+    position: relative;
     width: 100%;
-    padding: 15px;
-  }
-
-  header.main-header h1 {
-    font-size: 2.2em;
-  }
-  header.main-header p {
-    font-size: 1em;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 10px;
   }
 
   .menu-toggle {
+    display: block;
+    background-color: #82c91e;
+    width: 100%;
+    margin: 0;
+    padding: 12px;
+    font-size: 1em;
+    border-radius: 0;
+  }
+
+  nav.module-nav ul.module-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #2a2a3a;
+    border-radius: 0 0 10px 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    z-index: 10;
+  }
+
+  nav.module-nav ul.module-list.active {
+    max-height: 80vh;
+  }
+
+  nav.module-nav ul.module-list li a {
     font-size: 0.95em;
-    padding: 10px;
+    padding: 12px 16px;
   }
 
   main.content-area {
     padding: 20px;
   }
-}
 
-/* Smartphones */
-@media (max-width: 480px) {
   header.main-header {
     padding: 20px 10px;
   }
   header.main-header h1 {
-    font-size: 1.8em;
+    font-size: 2em;
+  }
+  header.main-header p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  header.main-header {
+    padding: 15px 10px;
+  }
+  header.main-header h1 {
+    font-size: 1.6em;
   }
   header.main-header p {
     font-size: 0.9em;
   }
 
-  .container {
-    margin: 20px auto;
-  }
-
-  /* Navegação colapsável fica full-width */
-  .menu-toggle {
-    margin-bottom: 10px;
-  }
-  nav.module-nav ul.module-list li a {
-    font-size: 0.9em;
-    padding: 10px;
-  }
-
   main.content-area {
     padding: 15px;
   }
-
-  #conteudo-modulo h1 {
-    font-size: 1.8em;
-  }
-  #conteudo-modulo h2 {
-    font-size: 1.6em;
-  }
+  #conteudo-modulo h1 { font-size: 1.6em; }
+  #conteudo-modulo h2 { font-size: 1.4em; }
   #conteudo-modulo p,
-  #conteudo-modulo li {
-    font-size: 1em;
-  }
+  #conteudo-modulo li { font-size: 0.95em; }
 
   footer.main-footer {
     font-size: 0.85em;
