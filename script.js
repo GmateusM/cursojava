@@ -5,7 +5,6 @@ function toggleMenu() {
   const btn   = document.querySelector('.menu-toggle');
   const lista = document.getElementById('modulo-lista');
   const expanded = btn.getAttribute('aria-expanded') === 'true';
-
   btn.setAttribute('aria-expanded', String(!expanded));
   lista.classList.toggle('active');
 }
@@ -48,10 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   navLinks.forEach(link => {
-    link.addEventListener("click", async (event) => {
+    link.addEventListener("click", async event => {
       event.preventDefault();
 
-      // Fecha o menu após clique (mobile)
+      // Fecha o menu (mobile)
       const lista = document.getElementById('modulo-lista');
       const btn   = document.querySelector('.menu-toggle');
       if (lista && btn) {
@@ -59,36 +58,31 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.setAttribute('aria-expanded', 'false');
       }
 
-      // Oculta boas-vindas e mostra loading
+      // Loading e oculta boas-vindas
       if (boasVindasSection) boasVindasSection.style.display = "none";
       conteudoModuloDiv.innerHTML = "<p>Carregando conteúdo...</p>";
 
-      const moduleKey = link.getAttribute("href");
-      const fileName  = moduloFileNames[moduleKey];
+      const key = link.getAttribute("href");
+      const fileName = moduloFileNames[key];
 
-      if (fileName) {
-        const filePath = `curso_javascript_conteudo/${fileName}`;
-        console.log("Tentando carregar:", filePath);
-
-        try {
-          const response = await fetch(filePath);
-          if (!response.ok) {
-            throw new Error(`Erro HTTP ${response.status} ao buscar ${filePath}`);
-          }
-          const markdownContent = await response.text();
-          if (typeof marked !== "undefined") {
-            conteudoModuloDiv.innerHTML = marked.parse(markdownContent);
-          } else {
-            console.error("Marked.js não definida.");
-            conteudoModuloDiv.innerHTML = "<p>Erro: biblioteca Markdown não encontrada.</p>";
-          }
-        } catch (error) {
-          console.error("Erro ao carregar módulo:", error);
-          conteudoModuloDiv.innerHTML = `<p>Erro ao carregar o conteúdo do módulo: ${error.message}</p>`;
-        }
-      } else {
+      if (!fileName) {
         conteudoModuloDiv.innerHTML = `<p>Conteúdo para "${link.textContent.trim()}" não disponível.</p>`;
-        console.warn("Link não mapeado:", moduleKey);
+        console.warn("Link não mapeado:", key);
+        return;
+      }
+
+      // ← Aqui foi alterado de `curso_javascript_conteudo/` para `modulos/`
+      const filePath = `modulos/${fileName}`;
+      console.log("Tentando carregar:", filePath);
+
+      try {
+        const resp = await fetch(filePath);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const md = await resp.text();
+        conteudoModuloDiv.innerHTML = marked ? marked.parse(md) : md;
+      } catch (err) {
+        console.error("Erro ao carregar módulo:", err);
+        conteudoModuloDiv.innerHTML = `<p>Erro ao carregar o conteúdo do módulo: ${err.message}</p>`;
       }
     });
   });
