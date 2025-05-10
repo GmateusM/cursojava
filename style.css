@@ -178,3 +178,81 @@ footer.main-footer {
   font-size: 0.95em;
   border-top: 5px solid #82c91e;
 }
+
+/* ======== RESPONSIVIDADE ======== */
+
+/* Tablets e telas médias */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 0 15px;
+    gap: 20px;
+  }
+
+  nav.module-nav {
+    width: 100%;
+    padding: 15px;
+  }
+
+  header.main-header h1 {
+    font-size: 2.2em;
+  }
+  header.main-header p {
+    font-size: 1em;
+  }
+
+  .menu-toggle {
+    font-size: 0.95em;
+    padding: 10px;
+  }
+
+  main.content-area {
+    padding: 20px;
+  }
+}
+
+/* Smartphones */
+@media (max-width: 480px) {
+  header.main-header {
+    padding: 20px 10px;
+  }
+  header.main-header h1 {
+    font-size: 1.8em;
+  }
+  header.main-header p {
+    font-size: 0.9em;
+  }
+
+  .container {
+    margin: 20px auto;
+  }
+
+  /* Navegação colapsável fica full-width */
+  .menu-toggle {
+    margin-bottom: 10px;
+  }
+  nav.module-nav ul.module-list li a {
+    font-size: 0.9em;
+    padding: 10px;
+  }
+
+  main.content-area {
+    padding: 15px;
+  }
+
+  #conteudo-modulo h1 {
+    font-size: 1.8em;
+  }
+  #conteudo-modulo h2 {
+    font-size: 1.6em;
+  }
+  #conteudo-modulo p,
+  #conteudo-modulo li {
+    font-size: 1em;
+  }
+
+  footer.main-footer {
+    font-size: 0.85em;
+    padding: 20px 0;
+  }
+}
