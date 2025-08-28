@@ -1,74 +1,786 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Curso Completo de JavaScript - Do Zero ao Pleno</title>
-  <link rel="stylesheet" href="style.css?v=1.4" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AÇAÍ SUPREMO VR - Monte o seu</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary-purple: #8b5cf6;
+    --dark-purple: #7c3aed;
+    --text-purple: #5b21b6;
+    --primary-yellow: #facc15;
+    --light-yellow: #fefce8;
+    --dark-yellow: #f59e0b;
+    --font-display: 'Fredoka One', cursive;
+    --font-body: 'Comic Neue', cursive;
+  }
+  /* Animação de entrada suave */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 150px; /* Ajuste para o header e nav fixos */
+  }
+  body {
+    font-family: var(--font-body);
+    background-color: var(--light-yellow);
+    background-image: radial-gradient(var(--primary-yellow) 0.5px, transparent 0.5px), radial-gradient(var(--primary-yellow) 0.5px, var(--light-yellow) 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    color: var(--text-purple);
+  }
+  header {
+    background: var(--primary-purple);
+    color: var(--primary-yellow);
+    text-shadow: 2px 2px 0px #00000020;
+    border-bottom: 4px solid var(--dark-yellow);
+  }
+  header h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .logo-circle {
+    background: var(--primary-yellow);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--light-yellow);
+    box-shadow: 0 4px 8px #00000030;
+    transition: transform 0.3s ease;
+  }
+  .logo-circle:hover {
+    transform: rotate(-15deg) scale(1.1);
+  }
+  /* Barra de Navegação de Categorias */
+  #category-nav {
+    background-color: #ffffff;
+    border-bottom: 3px dashed var(--dark-yellow);
+    padding: 0.75rem 0;
+    position: sticky;
+    top: 85px; /* Altura do header */
+    z-index: 20;
+  }
+  .category-btn {
+    font-family: var(--font-display);
+    background-color: var(--primary-yellow);
+    color: var(--text-purple);
+    border: 2px solid var(--dark-purple);
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0;
+  }
+  .category-btn:hover, .category-btn:focus {
+    background-color: var(--dark-yellow);
+    color: white;
+    transform: scale(1.05);
+    outline: 2px solid white;
+  }
+  h2.section-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--dark-purple);
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+  /* Linha decorativa para o título da seção */
+  h2.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 5px;
+    background: var(--primary-yellow);
+    border-radius: 5px;
+    border: 2px solid var(--dark-purple);
+  }
+  #checkout-btn {
+    font-family: var(--font-display);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 0 var(--dark-purple);
+  }
+  #checkout-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--dark-purple);
+  }
+  #checkout-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--dark-purple);
+  }
+  #checkout-btn:disabled {
+    box-shadow: none;
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+  button {
+    cursor: pointer;
+  }
+  /* Estilos do Carrinho Flutuante */
+  #cart-modal {
+    background-color: var(--light-yellow);
+    border-left: 5px solid var(--dark-yellow);
+  }
+  #cart-modal .section-title {
+    font-size: 2rem;
+  }
+  #cart-items-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  #cart-items-container::-webkit-scrollbar-thumb {
+    background: var(--primary-yellow);
+    border-radius: 4px;
+    border: 2px solid var(--light-yellow);
+  }
+  #cart-items-container::-webkit-scrollbar-track {
+    background: #fffbeb;
+  }
+  .toast-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 9999px;
+    font-family: var(--font-display);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+  .toast-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  .toast-success {
+    background-color: #22c55e;
+  }
+  .toast-error {
+    background-color: #ef4444;
+  }
+  /* Novos estilos para melhorias de acessibilidade */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-purple);
+    color: white;
+    padding: 8px;
+    z-index: 100;
+    border-radius: 0 0 4px 4px;
+    transition: top 0.3s;
+  }
+  .skip-link:focus {
+    top: 0;
+  }
+  .cart-item-total {
+    font-weight: bold;
+    color: var(--dark-purple);
+    margin-left: 10px;
+  }
+  .remove-item-btn {
+    background: transparent;
+    color: #ef4444;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    transition: all 0.2s;
+  }
+  .remove-item-btn:hover, .remove-item-btn:focus {
+    background: #ef4444;
+    color: white;
+    outline: none;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  /* Melhorias de foco para acessibilidade */
+  button:focus, input:focus, a:focus {
+    outline: 2px solid var(--dark-yellow);
+    outline-offset: 2px;
+  }
+  /* Melhor contraste para texto */
+  .text-purple-800 {
+    color: #6b21a8;
+  }
+</style>
 </head>
 <body>
-  <header class="main-header">
-    <h1>Curso Completo de JavaScript</h1>
-    <p>Do Zero ao Pleno - Prepare-se para o Mercado!</p>
-  </header>
+<a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
 
-  <div class="container">
-    <nav class="module-nav" aria-label="Navegação pelos módulos">
-      <button
-        class="menu-toggle"
-        aria-expanded="false"
-        aria-controls="modulo-lista"
-      >
-        Módulos do Curso
+<header class="py-4 shadow-lg sticky top-0 z-30">
+  <div class="container mx-auto flex items-center justify-between px-4 sm:px-6">
+    <div class="flex items-center space-x-4">
+      <div class="logo-circle">
+        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081822.png" alt="Logo Açaí Supremo VR - Ícone de uma tigela de açaí" />
+      </div>
+      <h1 class="text-2xl sm:text-4xl">AÇAÍ SUPREMO VR</h1>
+    </div>
+
+    <div class="relative">
+      <button id="cart-icon" class="cursor-pointer p-3 bg-yellow-400 rounded-full hover:bg-yellow-300 transition-all duration-300 shadow-md hover:scale-110" aria-label="Abrir carrinho de compras - Itens no carrinho: 0">
+        <i class="fas fa-shopping-cart text-purple-700 text-2xl" aria-hidden="true"></i>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-purple-700 text-yellow-400 text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold" aria-live="polite">0</span>
       </button>
-      <ul id="modulo-lista" class="module-list">
-        <li><a href="#modulo1">Módulo 01: Introdução ao JavaScript e Ambiente</a></li>
-        <li><a href="#modulo2">Módulo 02: Sintaxe Básica e Tipos de Dados</a></li>
-        <li><a href="#modulo3">Módulo 03: Operadores e Estruturas de Controle</a></li>
-        <li><a href="#modulo4">Módulo 04: Funções em Detalhe</a></li>
-        <li><a href="#modulo5">Módulo 05: Objetos e Arrays</a></li>
-        <li><a href="#modulo6">Módulo 06: Aprofundando em Funções</a></li>
-        <li><a href="#modulo7">Módulo 07: POO - Prototypes</a></li>
-        <li><a href="#modulo8">Módulo 08: POO - Classes (ES6+)</a></li>
-        <li><a href="#modulo9">Módulo 09: JavaScript Assíncrono</a></li>
-        <li><a href="#modulo10">Módulo 10: Manipulação do DOM</a></li>
-        <li><a href="#modulo11">Módulo 11: Eventos no DOM (Aprofundamento)</a></li>
-        <li><a href="#modulo12">Módulo 12: Módulos ES6</a></li>
-        <li><a href="#modulo13">Módulo 13: APIs e Fetch</a></li>
-        <li><a href="#modulo14">Módulo 14: Web Storage</a></li>
-        <li><a href="#modulo15">Módulo 15: Tópicos Avançados e Padrões de Projeto</a></li>
-        <li><a href="#modulo16">Módulo 16: Ferramentas Essenciais do Desenvolvedor</a></li>
-        <li><a href="#modulo17">Módulo 17: Introdução a Frameworks Front-end (ex: React)</a></li>
-        <li><a href="#modulo18">Módulo 18: Introdução ao Node.js e Back-end com JavaScript</a></li>
-        <li><a href="#modulo19">Módulo 19: Testes em JavaScript</a></li>
-        <li><a href="#modulo20">Módulo 20: Boas Práticas, Performance e Segurança</a></li>
-        <li><a href="#modulo21">Módulo 21: Projeto Final e Preparação para o Mercado</a></li>
-      </ul>
-    </nav>
-
-    <main class="content-area">
-      <section id="boas-vindas">
-        <h2>Bem-vindo ao Curso Completo de JavaScript!</h2>
-        <p>
-          Este curso foi cuidadosamente elaborado para levar você desde os
-          conceitos mais básicos do JavaScript até um nível de conhecimento
-          pleno, capacitando-o para enfrentar os desafios do mercado de trabalho
-          como desenvolvedor JavaScript.
-        </p>
-        <p>Navegue pelos módulos ao lado para iniciar sua jornada de aprendizado.</p>
-      </section>
-
-      <section id="conteudo-modulo">
-        <!-- Conteúdo de cada módulo será carregado aqui via script.js -->
-      </section>
-    </main>
+    </div>
   </div>
+</header>
 
-  <footer class="main-footer">
-    <p>&copy; 2025 Mateus Maia. Todos os direitos reservados.</p>
-  </footer>
+<nav id="category-nav" class="shadow-md" aria-label="Navegação por categorias de produtos">
+    <div id="category-buttons-container" class="container mx-auto px-4 sm:px-6 flex items-center space-x-3 overflow-x-auto pb-2">
+        </div>
+</nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="script.js"></script>
+<main id="main-content" class="container mx-auto px-4 sm:px-6 py-12">
+  <section id="menu" class="space-y-16"></section>
+</main>
+
+<div id="cart-backdrop" class="fixed inset-0 bg-black bg-opacity-60 z-40 hidden transition-opacity duration-300"></div>
+<aside id="cart-modal" class="fixed top-0 right-0 h-full w-full max-w-md bg-yellow-50 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl" aria-modal="true" role="dialog" aria-label="Carrinho de compras">
+    <div class="flex justify-between items-center p-6 border-b-4 border-dashed border-yellow-500">
+        <h2 class="section-title !mb-0 !border-none !pb-0 !text-left !text-3xl">💜 Meu Açaí</h2>
+        <button id="close-cart-btn" class="text-purple-700 hover:text-purple-900 text-4xl font-bold leading-none transition-transform hover:rotate-90" aria-label="Fechar carrinho de compras">&times;</button>
+    </div>
+
+    <div id="cart-items-container" class="flex-grow p-6 space-y-4 overflow-y-auto min-h-0">
+        <p id="cart-empty-msg" class="text-center text-purple-800 py-8 font-bold text-lg">Seu carrinho está vazio!</p>
+    </div>
+
+    <div class="p-6 border-t-4 border-dashed border-yellow-500 bg-yellow-100">
+        <div class="flex justify-between items-center mb-4">
+            <div class="text-xl font-bold text-purple-800">
+                <span class="font-display">Total:</span>
+                <span id="cart-total" aria-live="polite" class="font-display">R$ 0,00</span>
+            </div>
+            <button id="clear-cart-btn" class="text-sm text-gray-600 hover:text-red-600 hover:underline transition-all duration-200 hidden">
+                <i class="fas fa-trash-alt mr-1" aria-hidden="true"></i> Esvaziar
+            </button>
+        </div>
+        <div class="mt-4">
+            <label for="address" class="block mb-2 font-bold text-purple-800 font-display">Seu Endereço:</label>
+            <input type="text" id="address" name="address" class="w-full p-3 border-2 border-yellow-500 rounded-lg focus:ring-purple-500 focus:border-purple-500 bg-white shadow-inner" placeholder="Ex: Rua, Número, Bairro" required aria-describedby="address-help">
+            <p id="address-help" class="text-sm text-gray-600 mt-1">Informe seu endereço completo para entrega</p>
+        </div>
+        <button id="checkout-btn" class="mt-6 w-full bg-purple-600 text-yellow-300 py-3 rounded-lg text-lg font-bold" disabled>
+            <i class="fab fa-whatsapp" aria-hidden="true"></i> Finalizar Pedido
+        </button>
+    </div>
+</aside>
+
+<footer class="bg-purple-900 text-yellow-300 mt-16 py-8">
+    <div class="container mx-auto text-center">
+        <p class="font-display">&copy; 2025 AÇAÍ SUPREMO VR. Todos os direitos reservados.</p>
+        <p class="text-sm mt-2">Feito com ❤️ para refrescar seu dia!</p>
+    </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script>
+// Web Component para o Card de Produto
+class ProductCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
+  connectedCallback() {
+    const name = this.getAttribute('name');
+    const price = parseFloat(this.getAttribute('price')).toFixed(2);
+    const oldPrice = this.getAttribute('oldPrice');
+    const promo = this.getAttribute('promo') === 'true';
+    const description = this.getAttribute('description');
+    const img = this.getAttribute('img');
+    const placeholderUrl = `https://placehold.co/400x200/fefce8/7c3aed?text=Açaí+delícia!`;
+
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host { 
+          display: block; 
+          animation: fadeIn 0.5s ease-out forwards;
+          opacity: 0;
+        }
+        .card { 
+          transition: transform 0.3s ease, box-shadow 0.3s ease; 
+          border-radius: 1.5rem; 
+          box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+          background: #fff; 
+          border: 4px solid #facc15; 
+          overflow: hidden; 
+          position: relative; 
+          display: flex; 
+          flex-direction: column; 
+          height: 100%; 
+        }
+        .card:hover, .card:focus-within { 
+          transform: translateY(-10px); 
+          box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.2), 0 10px 10px -5px rgba(139, 92, 246, 0.1);
+        }
+        .card-img-wrapper {
+          overflow: hidden;
+        }
+        .card-img { 
+          width: 100%; 
+          height: 200px; 
+          object-fit: cover;
+          transition: transform 0.4s ease;
+        }
+        .card:hover .card-img, .card:focus-within .card-img {
+          transform: scale(1.1);
+        }
+        .card-body { 
+          padding: 1.25rem; 
+          flex-grow: 1; 
+          display: flex; 
+          flex-direction: column; 
+          background-color: #fefce8;
+        }
+        .card-title { 
+          font-family: 'Fredoka One', cursive; 
+          font-size: 1.3rem; 
+          color: #5b21b6; /* text-purple */
+          margin-bottom: 0.5rem; 
+          min-height: 3.2rem; /* Garante alinhamento */
+        }
+        .card-description { 
+          font-size: 0.9rem; 
+          color: #9a3412; 
+          margin-bottom: 1rem; 
+          flex-grow: 1;
+        }
+        .price-section { 
+          display: flex; 
+          align-items: baseline; 
+          margin-bottom: 1rem; 
+        }
+        .price-current { 
+          font-size: 1.75rem; 
+          font-weight: 700; 
+          color: #9a3412; 
+          font-family: 'Fredoka One', cursive; 
+        }
+        .price-old { 
+          text-decoration: line-through; 
+          color: #9ca3af; 
+          font-size: 1rem; 
+          margin-left: 0.5rem; 
+        }
+        .add-btn { 
+          background-color: #facc15; 
+          color: #5b21b6; /* text-purple */
+          font-family: 'Fredoka One', cursive; 
+          padding: 0.75rem 1.5rem; 
+          border-radius: 9999px; 
+          border: 3px solid #5b21b6; /* text-purple */
+          font-weight: 700; 
+          cursor: pointer; 
+          transition: all 0.2s ease; 
+          width: 100%; 
+          text-transform: uppercase;
+          box-shadow: 0 4px 0 #f59e0b;
+        }
+        .add-btn:hover, .add-btn:focus { 
+          background-color: #f59e0b; 
+          transform: translateY(-2px);
+          box-shadow: 0 6px 0 #f59e0b;
+          outline: 2px solid white;
+        }
+        .add-btn:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 #f59e0b;
+        }
+        .promo-badge { 
+          position: absolute; 
+          top: 1rem; 
+          right: -10px; 
+          background: #8b5cf6; /* primary-purple */
+          color: #fefce8; 
+          font-weight: 700; 
+          font-size: 0.8rem; 
+          padding: 5px 15px; 
+          text-transform: uppercase; 
+          font-family: 'Fredoka One', cursive; 
+          box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+          transform: rotate(15deg); 
+          border: 2px solid #fefce8;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      </style>
+      <div class="card">
+        ${promo ? '<span class="promo-badge">Promo!</span>' : ''}
+        <div class="card-img-wrapper">
+            <img src="${img}" alt="${name}" class="card-img" onerror="this.onerror=null;this.src='${placeholderUrl}';">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${name}</h3>
+          ${description ? `<p class="card-description">${description}</p>` : ''}
+          <div class="price-section">
+            <span class="price-current">R$ ${price.replace('.', ',')}</span>
+            ${oldPrice ? `<span class="price-old">R$ ${parseFloat(oldPrice).toFixed(2).replace('.', ',')}</span>` : ''}
+          </div>
+          <button class="add-btn" aria-label="Adicionar ${name} ao carrinho por R$ ${price.replace('.', ',')}">Adicionar</button>
+        </div>
+      </div>
+    `;
+
+    this.shadowRoot.querySelector('.add-btn').addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('addToCart', {
+        bubbles: true,
+        composed: true,
+        detail: {
+            id: this.getAttribute('id'),
+            name: name,
+            price: parseFloat(price)
+        }
+      }));
+    });
+  }
+}
+customElements.define('product-card', ProductCard);
+
+// Lógica principal da aplicação
+document.addEventListener('DOMContentLoaded', () => {
+
+    const menuData = {
+        "💜 Monte seu Açaí": [
+            { id: "acai-300ml", name: "Açaí Tradicional 300ml", price: 12.00, description: "Escolha seus acompanhamentos e monte do seu jeito!", img: "https://i.imgur.com/TskfUbd.png" },
+            { id: "acai-500ml", name: "Açaí Tradicional 500ml", price: 16.00, description: "Mais açaí para você caprichar nos adicionais.", img: "https://i.imgur.com/TskfUbd.png" },
+            { id: "acai-700ml", name: "Açaí Tradicional 700ml", price: 20.00, description: "O tamanho perfeito para os super fãs de açaí.", img: "https://i.imgur.com/TskfUbd.png" },
+        ],
+        "🌟 Açaís da Casa": [
+            { id: "supremo-tropical", name: "Supremo Tropical", price: 18.90, oldPrice: 21.90, promo: true, description: "Açaí com banana, morango, kiwi e granola.", img: "https://i.imgur.com/e2AIj0e.png" },
+            { id: "explosao-chocolate", name: "Explosão de Chocolate", price: 22.90, description: "Açaí com Nutella, morango, pedaços de brownie e Leite Ninho.", img: "https://i.imgur.com/gS22FNb.png" },
+            { id: "maromba-power", name: "Maromba Power", price: 24.90, description: "Açaí com whey protein, pasta de amendoim, banana e aveia.", img: "https://i.imgur.com/0u1OaIh.png" },
+            { id: "ninho-morango", name: "Ninho com Morango", price: 20.90, oldPrice: 23.90, promo: true, description: "A combinação perfeita de Leite Ninho, morangos frescos e leite condensado.", img: "https://i.imgur.com/zB8k8hV.png" },
+        ],
+        "🚤 Barcas de Açaí": [
+            { id: "barca-media", name: "Barca Média (Serve 2)", price: 45.90, description: "1kg de açaí puro + 5 acompanhamentos à sua escolha para montar em casa.", img: "https://i.imgur.com/6l2gMvL.png" },
+            { id: "barca-grande", name: "Barca Grande (Serve 4)", price: 69.90, oldPrice: 79.90, promo: true, description: "2kg de açaí puro + 8 acompanhamentos à sua escolha para a galera toda.", img: "https://i.imgur.com/rN1fK3f.png" },
+        ],
+        "🍹 Vitaminas e Sucos": [
+            { id: "vitamina-acai-banana", name: "Vitamina de Açaí com Banana 500ml", price: 14.90, img: "https://i.imgur.com/UfG775f.png" },
+            { id: "suco-laranja", name: "Suco de Laranja Natural 500ml", price: 8.00, img: "https://i.imgur.com/XqT2J1v.png" },
+            { id: "suco-abacaxi-hortela", name: "Suco de Abacaxi com Hortelã 500ml", price: 9.00, img: "https://i.imgur.com/XqT2J1v.png" },
+            { id: "agua-coco", name: "Água de Coco 500ml", price: 7.00, img: "https://i.imgur.com/6S1JqH6.png" },
+        ]
+    };
+
+    let cart = JSON.parse(localStorage.getItem('acaisupremovr_cart')) || [];
+    let isConfirmingClear = false;
+    let confirmTimeout;
+
+    const cartIcon = document.getElementById('cart-icon');
+    const cartCount = document.getElementById('cart-count');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartEmptyMsg = document.getElementById('cart-empty-msg');
+    const cartTotalSpan = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const addressInput = document.getElementById('address');
+    const menuSection = document.getElementById('menu');
+    const toastContainer = document.getElementById('toast-container');
+    const cartModal = document.getElementById('cart-modal');
+    const cartBackdrop = document.getElementById('cart-backdrop');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+    const categoryButtonsContainer = document.getElementById('category-buttons-container');
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+    
+    const WHATSAPP_NUMBER = '5524999219813';
+
+    const openCart = () => {
+        cartModal.classList.remove('translate-x-full');
+        cartBackdrop.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Previne scroll do body quando o carrinho está aberto
+        // Foco no botão de fechar para melhorar acessibilidade
+        setTimeout(() => closeCartBtn.focus(), 100);
+    };
+
+    const closeCart = () => {
+        cartModal.classList.add('translate-x-full');
+        cartBackdrop.classList.add('hidden');
+        document.body.style.overflow = 'auto'; // Restaura scroll do body
+        // Devolve o foco para o ícone do carrinho
+        cartIcon.focus();
+    };
+
+    cartIcon.addEventListener('click', openCart);
+    closeCartBtn.addEventListener('click', closeCart);
+    cartBackdrop.addEventListener('click', closeCart);
+
+    // Adicionar suporte a teclado para abrir/fechar o carrinho
+    cartIcon.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openCart();
+        }
+    });
+
+    closeCartBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeCart();
+        }
+    });
+
+    // Fechar carrinho com a tecla Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !cartModal.classList.contains('translate-x-full')) {
+            closeCart();
+        }
+    });
+
+    const sanitizeId = (text) => {
+        return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    };
+
+    const renderCategoryNav = () => {
+        const categories = Object.keys(menuData);
+        categoryButtonsContainer.innerHTML = categories.map(category => {
+            const categoryId = sanitizeId(category);
+            return `<a href="#category-${categoryId}" class="category-btn px-4 py-2 rounded-full text-sm shadow-sm">${category}</a>`;
+        }).join('');
+    };
+
+    const renderMenu = () => {
+        let menuHTML = '';
+        const categories = Object.keys(menuData);
+
+        categories.forEach((category) => {
+            const categoryId = `category-${sanitizeId(category)}`;
+            menuHTML += `
+                <section id="${categoryId}">
+                    <h2 class="section-title">${category}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        ${menuData[category].map((item, i) => `
+                            <div style="animation-delay: ${i * 100}ms">
+                                <product-card
+                                    id="${item.id}"
+                                    name="${item.name}"
+                                    price="${item.price}"
+                                    ${item.oldPrice ? `oldPrice="${item.oldPrice}"` : ''}
+                                    ${item.promo ? `promo="true"` : ''}
+                                    ${item.description ? `description="${item.description}"` : ''}
+                                    img="${item.img}"
+                                ></product-card>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+        });
+        menuSection.innerHTML = menuHTML;
+    };
+
+    menuSection.addEventListener('addToCart', (event) => {
+        const product = event.detail;
+        const existingProductIndex = cart.findIndex(item => item.id === product.id);
+
+        if (existingProductIndex > -1) {
+            cart[existingProductIndex].quantity++;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        showToast(`${product.name} adicionado!`);
+        updateCart();
+    });
+
+    const updateCart = () => {
+        renderCartItems();
+        updateCartTotal();
+        updateCartIconCount();
+        checkCheckoutButton();
+        updateClearCartButtonState();
+        localStorage.setItem('acaisupremovr_cart', JSON.stringify(cart));
+    };
+
+    const renderCartItems = () => {
+        if (cart.length === 0) {
+            cartEmptyMsg.style.display = 'block';
+            cartItemsContainer.innerHTML = '';
+            cartItemsContainer.appendChild(cartEmptyMsg);
+        } else {
+            cartEmptyMsg.style.display = 'none';
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item flex justify-between items-center bg-white p-3 rounded-lg shadow-sm" data-id="${item.id}">
+                    <div class="flex-grow pr-3">
+                        <p class="font-bold text-sm leading-tight">${item.name}</p>
+                        <p class="text-xs text-gray-600">R$ ${item.price.toFixed(2).replace('.', ',')} 
+                            <span class="cart-item-total">= R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 cart-item-controls">
+                        <button class="decrease-qty bg-red-500 text-white rounded-md font-bold w-7 h-7 flex items-center justify-center transition-transform hover:scale-110" aria-label="Reduzir quantidade">-</button>
+                        <span class="font-bold w-6 text-center">${item.quantity}</span>
+                        <button class="increase-qty bg-green-500 text-white rounded-md font-bold w-7 h-7 flex items-center justify-center transition-transform hover:scale-110" aria-label="Aumentar quantidade">+</button>
+                        <button class="remove-item-btn" aria-label="Remover item do carrinho">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    };
+    
+    cartItemsContainer.addEventListener('click', (event) => {
+        const target = event.target.closest('button');
+        if (!target) return;
+
+        const cartItemDiv = target.closest('.cart-item');
+        const productId = cartItemDiv.dataset.id;
+        const productIndex = cart.findIndex(item => item.id === productId);
+
+        if(productIndex === -1) return;
+
+        if (target.classList.contains('increase-qty')) {
+            cart[productIndex].quantity++;
+            showToast(`Quantidade de ${cart[productIndex].name} aumentada.`);
+        } else if (target.classList.contains('decrease-qty')) {
+            cart[productIndex].quantity--;
+            if (cart[productIndex].quantity === 0) {
+                showToast(`${cart[productIndex].name} removido do carrinho.`);
+                cart.splice(productIndex, 1);
+            } else {
+                showToast(`Quantidade de ${cart[productIndex].name} reduzida.`);
+            }
+        } else if (target.classList.contains('remove-item-btn')) {
+            showToast(`${cart[productIndex].name} removido do carrinho.`);
+            cart.splice(productIndex, 1);
+        }
+        
+        updateCart();
+    });
+
+    const updateCartTotal = () => {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        cartTotalSpan.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    };
+
+    const updateCartIconCount = () => {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+        // Atualiza o texto do aria-label para acessibilidade
+        cartIcon.setAttribute('aria-label', `Abrir carrinho de compras - Itens no carrinho: ${totalItems}`);
+    };
+
+    const checkCheckoutButton = () => {
+        const address = addressInput.value.trim();
+        // Validação de endereço mais robusta
+        const isValidAddress = address.length >= 5 && address.includes(' '); // Mínimo 5 caracteres e pelo menos um espaço
+        checkoutBtn.disabled = !(cart.length > 0 && isValidAddress);
+    };
+
+    const resetClearCartButton = () => {
+        isConfirmingClear = false;
+        clearTimeout(confirmTimeout);
+        clearCartBtn.innerHTML = '<i class="fas fa-trash-alt mr-1" aria-hidden="true"></i> Esvaziar';
+        clearCartBtn.classList.remove('text-red-700', 'font-bold');
+    };
+
+    const updateClearCartButtonState = () => {
+        if (cart.length > 0) {
+            clearCartBtn.classList.remove('hidden');
+        } else {
+            clearCartBtn.classList.add('hidden');
+            resetClearCartButton();
+        }
+    };
+    
+    clearCartBtn.addEventListener('click', () => {
+        if (isConfirmingClear) {
+            cart = [];
+            showToast('Carrinho esvaziado!', 'success');
+            updateCart();
+            resetClearCartButton();
+        } else {
+            isConfirmingClear = true;
+            clearCartBtn.innerHTML = 'Tem certeza?';
+            clearCartBtn.classList.add('text-red-700', 'font-bold');
+            confirmTimeout = setTimeout(resetClearCartButton, 4000);
+        }
+    });
+
+    const showToast = (message, type = 'success') => {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.className = 'toast-notification';
+        toast.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 3000);
+    };
+    
+    addressInput.addEventListener('input', checkCheckoutButton);
+
+    checkoutBtn.addEventListener('click', () => {
+        const address = addressInput.value.trim();
+        if (cart.length === 0) {
+            showToast("Seu carrinho está vazio!", 'error');
+            return;
+        }
+        
+        // Validação mais robusta do endereço
+        if (address.length < 5 || !address.includes(' ')) {
+            showToast("Por favor, informe um endereço válido com rua e número.", 'error');
+            addressInput.focus();
+            return;
+        }
+
+        let message = "Olá, AÇAÍ SUPREMO VR! 👋💜\nGostaria de fazer o seguinte pedido:\n\n";
+        cart.forEach(item => {
+            message += `*${item.quantity}x* - ${item.name} - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`;
+        });
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        message += `\n*Total:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
+        message += `\n*Endereço para entrega:*\n${address}`;
+        message += `\n\n*Observações:*\n`;
+
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`, '_blank');
+    });
+
+    // Inicialização da aplicação
+    renderCategoryNav();
+    renderMenu();
+    updateCart();
+    
+    // Adicionar suporte a teclado para os botões de categoria
+    categoryButtonsContainer.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.target.click();
+        }
+    });
+});
+</script>
 </body>
 </html>
